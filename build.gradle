@@ -1,5 +1,49 @@
-
-
-repositories {
-    mavenCentral()
+//所有子项目的通用配置
+allprojects {
+    apply plugin: 'idea'
 }
+
+subprojects {
+    apply plugin:'java'
+
+    // JVM 版本号要求
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
+
+    // java编译的时候缺省状态下会因为中文字符而失败
+    [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+
+    //定义版本号
+    ext {
+        springVersion = '4.1.6.RELEASE'
+        servletApiVersion = "2.5"
+        junitVersion = '4.11'
+    }
+
+    //仓库
+    repositories {
+        mavenLocal()
+        maven {
+            url "http://maven.springframework.org/release/"
+        }
+        maven {
+            url "http://maven.oschina.net/content/groups/public/"
+        }
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencies {
+        // 通用依赖
+        compile(
+                "org.springframework:spring-context:$springVersion"
+
+        )
+        // 测试依赖
+        testCompile(
+                "junit:junit:$junitVersion"
+        )
+    }
+}
+
+
